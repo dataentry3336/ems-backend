@@ -66,3 +66,15 @@ jobs:
           REPO_URI: '600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example'
         run: |
           docker push 600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example:${{ github.run_number }}
+
+      - name: Set variable
+        run: |
+          echo "ECS_SERVICE=springboot-task-service-lyaso0x0" >> $GITHUB_ENV
+          echo "ECS_CLUSTER=panda-work" >> $GITHUB_ENV
+
+      - name: Deploy in ECS
+        env:
+          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+        run: |
+            aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment --region us-east-1
