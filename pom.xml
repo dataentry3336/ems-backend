@@ -84,6 +84,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<finalName>ems-backend</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
