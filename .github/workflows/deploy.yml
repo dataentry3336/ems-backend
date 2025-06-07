@@ -1,0 +1,58 @@
+name: Deploy to AWS ECS
+
+on:
+  push:
+    branches:
+      - main  # Run this workflow on every push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set build number
+        run: echo "Run Number:${{ github.run_number }}"
+        
+      - name: Set directory name
+        run: |
+         cd ../../ 
+         echo "directory1 : $(pwd)"
+         
+         cd ../
+         echo "directory2 : $(pwd)"
+
+         cd .
+         echo "directory3 : $(pwd)"
+        
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+       
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        env:
+          REPO_URI: '600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example'
+          IMAGE_NAME: 'ems-backend'
+        run: |
+          docker build -t ems-backend:${{ github.run_number }} .
+          docker tag ems-backend:${{ github.run_number }} 600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example:${{ github.run_number }}
+       
+      - name: get image name
+        run: |
+         echo "IMAGE_NAME : $IMAGE_NAME"
+         echo "REPO_URI : $REPO_URI" 
+          
+      - name: Push to Amazon ECR
+        env:
+          REPO_URI: '600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example'
+        run: |
+          docker push 600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example:${{ github.run_number }}
