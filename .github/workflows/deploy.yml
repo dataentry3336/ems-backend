@@ -70,7 +70,7 @@ jobs:
         with:
          task-definition: springboot-task.json
          container-name: springboot-example
-         image: ${{ steps.build-image.outputs.image }}
+         image: ems-backend:${{ github.run_number }}
           
       - name: Set variable
         run: |
@@ -83,7 +83,7 @@ jobs:
           ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
           ECS_SERVICE: ${{ env.ECS_SERVICE }}
         with:
-         task-definition: ${{ steps.task-def.outputs.task-definition }}
+         task-definition: springboot-task.json
          service: $ECS_SERVICE
          cluster: $ECS_CLUSTER
          wait-for-service-stability: true
