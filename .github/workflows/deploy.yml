@@ -80,11 +80,11 @@ jobs:
       - name: Deploy in ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         env:
-          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
-          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+          ECS_CLUSTER: panda-work
+          ECS_SERVICE: springboot-example-service
         with:
          task-definition: springboot-task.json
-         service: $ECS_SERVICE
-         cluster: $ECS_CLUSTER
+         service: springboot-example-service
+         cluster: panda-work
          wait-for-service-stability: true
 
