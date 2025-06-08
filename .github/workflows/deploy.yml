@@ -78,7 +78,7 @@ jobs:
           echo "ECS_CLUSTER=panda-work" >> $GITHUB_ENV
 
       - name: Deploy in ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         env:
           ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
           ECS_SERVICE: ${{ env.ECS_SERVICE }}
