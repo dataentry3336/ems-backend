@@ -56,7 +56,8 @@ jobs:
         run: |
           docker build -t ems-backend:${{ github.run_number }} .
           docker tag ems-backend:${{ github.run_number }} 600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example:${{ github.run_number }}
-
+          echo "image=600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example:${{ github.run_number }}" >> $GITHUB_ENV
+          
       - name: Push to Amazon ECR
         env:
           REPO_URI: '600627340343.dkr.ecr.us-east-1.amazonaws.com/spring-boot-example'
